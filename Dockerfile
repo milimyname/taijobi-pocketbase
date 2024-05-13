@@ -18,7 +18,7 @@ COPY ./migrations /pb/pb_migrations
 # uncomment to copy the local pb_hooks dir into the container
 # COPY ./pb_hooks /pb/pb_hooks
 
-ENV CGO_ENABLED=1
+ENV CGO_ENABLED=0
 
 EXPOSE 8080
 
