@@ -11,7 +11,7 @@ ADD https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/po
 RUN unzip /tmp/pb.zip -d /pb/
 
 # uncomment to copy the local pb_migrations dir into the container
-COPY ./pb_migrations /pb/pb_migrations 
+COPY ./migrations /pb/pb_migrations 
 
 # COPY ./pb_data /pb/pb_data
 
