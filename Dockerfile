@@ -30,7 +30,7 @@ WORKDIR /app
 COPY --from=builder /build/main .
 
 # Expose port 8090 to the outside world
-EXPOSE 8090
+EXPOSE 8080
 
 # Command to run the executable
-CMD ["./main", "serve", "--http=0.0.0.0:8090"]
+CMD ["./main", "serve", "--http=0.0.0.0:8080"]
