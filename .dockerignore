@@ -1,2 +1,4 @@
 .env
 **/fly.toml
+pb_data
+.github

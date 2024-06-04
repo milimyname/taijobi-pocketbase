@@ -1,26 +1,36 @@
-FROM alpine:latest
+# Start with a lightweight version of the official Golang image
+FROM golang:1.21-alpine as builder
 
-ARG PB_VERSION=0.22.12
+# Set necessary environmet variables needed by the Go application
+ENV GO111MODULE=on \
+    CGO_ENABLED=0 \
+    GOOS=linux \
+    GOARCH=amd64
 
-RUN apk add --no-cache \
-    unzip \
-    ca-certificates
+# Move to working directory /build
+WORKDIR /build
 
-# download and unzip PocketBase
-ADD https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip /tmp/pb.zip
-RUN unzip /tmp/pb.zip -d /pb/
+# Copy and download dependency using go mod
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
 
-# uncomment to copy the local pb_migrations dir into the container
-COPY ./migrations /pb/pb_migrations 
+# Copy the code into the container
+COPY . .
 
-# COPY ./pb_data /pb/pb_data
+# Build the application
+RUN go build -o main .
 
-# uncomment to copy the local pb_hooks dir into the container
-# COPY ./pb_hooks /pb/pb_hooks
+# Start a new stage from scratch
+FROM alpine:latest  
 
-ENV CGO_ENABLED=0
+WORKDIR /app
 
-EXPOSE 8080
+# Copy the Pre-built binary file from the previous stage
+COPY --from=builder /build/main .
 
-# start PocketBase
-CMD ["/pb/pocketbase", "serve", "--http=0.0.0.0:8080"]
+# Expose port 8090 to the outside world
+EXPOSE 8090
+
+# Command to run the executable
+CMD ["./main", "serve", "--http=0.0.0.0:8090"]
