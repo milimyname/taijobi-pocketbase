@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	// Include if you have migrations to register
-	// _ "taijobi-pocketbase/migrations"
+	_ "taijobi-pocketbase/migrations"
 
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
