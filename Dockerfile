@@ -1,5 +1,5 @@
 # Start with a lightweight version of the official Golang image
-FROM golang:1.21-alpine as builder
+FROM golang:1.22-alpine as builder
 
 # Set necessary environment variables needed by the Go application
 ENV GO111MODULE=on \
